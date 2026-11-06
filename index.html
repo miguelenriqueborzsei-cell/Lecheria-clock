@@ -14,12 +14,12 @@
     <meta property="og:url" content="https://lecheriaclock.com/">
     <meta property="og:title" content="Lecheria Clock | Tu tiempo, tu estilo">
     <meta property="og:description" content="Relojes de alta gama al mayor y detal con ajustador de regalo en cada caja. Entregas en Lechería y envíos por MRW.">
-    <meta property="og:image" content="images/poedagar675_negra.jpg">
+    <meta property="og:image" content="poedagar675_negra.jpg">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Lecheria Clock | Tu tiempo, tu estilo">
     <meta name="twitter:description" content="Relojes de alta gama al mayor y detal con ajustador de regalo en cada caja. Entregas en Lechería y envíos por MRW.">
-    <meta name="twitter:image" content="images/poedagar675_negra.jpg">
+    <meta name="twitter:image" content="poedagar675_negra.jpg">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -100,7 +100,7 @@
             <div class="flex items-center justify-between h-20">
                 <!-- Logo Navbar -->
                 <a href="#" class="flex items-center gap-3 group">
-                    <img src="images/logo.png" alt="Lecheria Clock" class="w-10 h-10 rounded-full object-cover border border-gold-500/40 group-hover:border-gold-500 transition-colors shadow-md">
+                    <img src="logo.png" alt="Lecheria Clock" class="w-10 h-10 rounded-full object-cover border border-gold-500/40 group-hover:border-gold-500 transition-colors shadow-md">
                     <div class="flex flex-col">
                         <span class="font-serif text-xl font-bold tracking-widest text-white leading-none">LECHERIA<span class="text-gold-500"> CLOCK</span></span>
                         <span class="text-[9px] uppercase tracking-widest text-gold-400 font-light mt-1">Tu tiempo, tu estilo</span>
@@ -189,7 +189,7 @@
                         Más Vendido
                     </div>
                     <div class="relative overflow-hidden rounded-xl mb-6 bg-dark-950 cursor-pointer" onclick="openProductModal(6)">
-                        <img src="images/poedagar675_negra.jpg" onerror="this.src='https://placehold.co/600x600/12141C/D4AF37?text=Poedagar+675+Negra'" alt="Poedagar 675 Negra" class="w-full h-80 object-cover rounded-xl hover:scale-105 transition-transform duration-500">
+                        <img src="poedagar675_negra.jpg" onerror="this.src='https://placehold.co/600x600/12141C/D4AF37?text=Poedagar+675+Negra'" alt="Poedagar 675 Negra" class="w-full h-80 object-cover rounded-xl hover:scale-105 transition-transform duration-500">
                     </div>
                     <h3 class="font-serif text-2xl font-bold text-white mb-1">Poedagar 675 (Esfera Negra)</h3>
                     <p class="text-gold-400 font-semibold text-2xl mb-4">$33.25 USD <span class="text-xs text-gray-400 font-normal line-through">$35 USD</span></p>
@@ -464,7 +464,7 @@
                 <!-- Logo Footer -->
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
-                        <img src="images/logo.png" alt="Lecheria Clock" class="w-12 h-12 rounded-full object-cover border border-gold-500/40 shadow-md">
+                        <img src="logo.png" alt="Lecheria Clock" class="w-12 h-12 rounded-full object-cover border border-gold-500/40 shadow-md">
                         <span class="font-serif text-2xl font-bold tracking-widest text-white">LECHERIA<span class="text-gold-500"> CLOCK</span></span>
                     </div>
                     <p class="text-gray-400 text-sm leading-relaxed">
@@ -604,23 +604,23 @@
     <script>
         // 1. BASE DE DATOS ACTUALIZADA CON LOS 17 PRODUCTOS
         const products = [
-            { id: 1, name: "Megir 2144", originalPrice: 49, price: 44.1, category: "clasico", image: "images/megir2144.jpg", desc: "Diseño clásico con cronógrafo y acabado premium de alta durabilidad." },
-            { id: 2, name: "Naviforce 9089", originalPrice: 35, price: 33.25, category: "deportivo", image: "images/naviforce9089.jpg", desc: "Estilo deportivo robusto con doble pantalla y gran resistencia." },
-            { id: 3, name: "Poedagar 615 (Correa de Cuero)", originalPrice: 50, price: 47.5, category: "clasico", image: "images/poedagar615_cuero.jpg", desc: "Elegante reloj con correa de cuero genuino y esfera clásica." },
-            { id: 4, name: "Poedagar 615", originalPrice: 35, price: 33.25, category: "clasico", image: "images/poedagar615.jpg", desc: "Versión en acero inoxidable con movimiento de cuarzo de alta precisión." },
-            { id: 5, name: "Poedagar 675 (Esfera Azul)", originalPrice: 35, price: 33.25, category: "clasico", image: "images/poedagar675_azul.jpg", desc: "Acabado de lujo con dial azul profundo y fechador activo." },
-            { id: 6, name: "Poedagar 675 (Esfera Negra)", originalPrice: 35, price: 33.25, category: "clasico", image: "images/poedagar675_negra.jpg", desc: "Diseño elegante en acero inoxidable con detalles dorados y resistencia al agua." },
-            { id: 7, name: "Poedagar 825 (Negro)", originalPrice: 40, price: 38, category: "avant-garde", image: "images/poedagar825_negro.jpg", desc: "Diseño vanguardista en negro mate con alta resistencia al desgaste." },
-            { id: 8, name: "Poedagar 825 (Plateado)", originalPrice: 40, price: 38, category: "avant-garde", image: "images/poedagar825_plateado.jpg", desc: "Estructura geométrica moderna con acabados en tono plateado brillante." },
-            { id: 9, name: "Poedagar 825", originalPrice: 40, price: 38, category: "avant-garde", image: "images/poedagar825.jpg", desc: "Línea exclusiva de lujo con cristal mineral de alta dureza." },
-            { id: 10, name: "Poedagar 895 (Gris)", originalPrice: 45, price: 42.75, category: "deportivo", image: "images/poedagar895_gris.jpg", desc: "Estilo deportivo moderno en tono gris espacial de alto rendimiento." },
-            { id: 11, name: "Poedagar 895", originalPrice: 45, price: 42.75, category: "deportivo", image: "images/poedagar895.jpg", desc: "Cronógrafo deportivo resistente a impactos con correa reinforced." },
-            { id: 12, name: "Ajustador de Correa Metálico", originalPrice: 2, price: 2, category: "accesorio", image: "images/ajustador.jpg", desc: "Herramienta metálica de precisión para remover eslabones de correas en casa." },
-            { id: 13, name: "Poedagar 503", originalPrice: 35, price: 33.25, category: "clasico", image: "images/poedagar503.jpg", desc: "POEDAGAR Calendario de Lujo Elegante Casual Compacto Reloj de Cuarzo para Mujer con dial azul." },
-            { id: 14, name: "Poedagar 879", originalPrice: 45, price: 42.75, category: "deportivo", image: "images/poedagar879.jpg", desc: "Reloj de Moda de Lujo Versátil para Hombre Poedagar, Luz Nocturna, Multifuncional, Zona Horaria, Correa de Cuero Sintético." },
-            { id: 15, name: "Poedagar 785 (Rosa)", originalPrice: 35, price: 33.25, category: "clasico", image: "images/poedagar785_rosa.jpg", desc: "POEDAGAR Reloj de Cuarzo de Lujo Elegante Minimalista para Mujer, Calendario Casual Compacto de Negocios en tono rosa." },
-            { id: 16, name: "Poedagar 785 (Marrón)", originalPrice: 35, price: 33.25, category: "clasico", image: "images/poedagar785_marron.jpg", desc: "POEDAGAR Reloj de Cuarzo de Lujo Elegante Minimalista para Mujer, Calendario Casual Compacto de Negocios con dial marrón." },
-            { id: 17, name: "Rinnady 10474-1", originalPrice: 30, price: 28.5, category: "clasico", image: "images/rinnady10474.jpg", desc: "Reloj de Mujer Easy Fashion - Esfera Redonda, Correa de Silicona, Movimiento de Cuarzo, Diseño Lujoso y Moderno." }
+            { id: 1, name: "Megir 2144", originalPrice: 49, price: 44.1, category: "clasico", image: "megir2144.jpg", desc: "Diseño clásico con cronógrafo y acabado premium de alta durabilidad." },
+            { id: 2, name: "Naviforce 9089", originalPrice: 35, price: 33.25, category: "deportivo", image: "naviforce9089.jpg", desc: "Estilo deportivo robusto con doble pantalla y gran resistencia." },
+            { id: 3, name: "Poedagar 615 (Correa de Cuero)", originalPrice: 50, price: 47.5, category: "clasico", image: "poedagar615_cuero.jpg", desc: "Elegante reloj con correa de cuero genuino y esfera clásica." },
+            { id: 4, name: "Poedagar 615", originalPrice: 35, price: 33.25, category: "clasico", image: "poedagar615.jpg", desc: "Versión en acero inoxidable con movimiento de cuarzo de alta precisión." },
+            { id: 5, name: "Poedagar 675 (Esfera Azul)", originalPrice: 35, price: 33.25, category: "clasico", image: "poedagar675_azul.jpg", desc: "Acabado de lujo con dial azul profundo y fechador activo." },
+            { id: 6, name: "Poedagar 675 (Esfera Negra)", originalPrice: 35, price: 33.25, category: "clasico", image: "poedagar675_negra.jpg", desc: "Diseño elegante en acero inoxidable con detalles dorados y resistencia al agua." },
+            { id: 7, name: "Poedagar 825 (Negro)", originalPrice: 40, price: 38, category: "avant-garde", image: "poedagar825_negro.jpg", desc: "Diseño vanguardista en negro mate con alta resistencia al desgaste." },
+            { id: 8, name: "Poedagar 825 (Plateado)", originalPrice: 40, price: 38, category: "avant-garde", image: "poedagar825_plateado.jpg", desc: "Estructura geométrica moderna con acabados en tono plateado brillante." },
+            { id: 9, name: "Poedagar 825", originalPrice: 40, price: 38, category: "avant-garde", image: "poedagar825.jpg", desc: "Línea exclusiva de lujo con cristal mineral de alta dureza." },
+            { id: 10, name: "Poedagar 895 (Gris)", originalPrice: 45, price: 42.75, category: "deportivo", image: "poedagar895_gris.jpg", desc: "Estilo deportivo moderno en tono gris espacial de alto rendimiento." },
+            { id: 11, name: "Poedagar 895", originalPrice: 45, price: 42.75, category: "deportivo", image: "poedagar895.jpg", desc: "Cronógrafo deportivo resistente a impactos con correa reinforced." },
+            { id: 12, name: "Ajustador de Correa Metálico", originalPrice: 2, price: 2, category: "accesorio", image: "ajustador.jpg", desc: "Herramienta metálica de precisión para remover eslabones de correas en casa." },
+            { id: 13, name: "Poedagar 503", originalPrice: 35, price: 33.25, category: "clasico", image: "poedagar503.jpg", desc: "POEDAGAR Calendario de Lujo Elegante Casual Compacto Reloj de Cuarzo para Mujer con dial azul." },
+            { id: 14, name: "Poedagar 879", originalPrice: 45, price: 42.75, category: "deportivo", image: "poedagar879.jpg", desc: "Reloj de Moda de Lujo Versátil para Hombre Poedagar, Luz Nocturna, Multifuncional, Zona Horaria, Correa de Cuero Sintético." },
+            { id: 15, name: "Poedagar 785 (Rosa)", originalPrice: 35, price: 33.25, category: "clasico", image: "poedagar785_rosa.jpg", desc: "POEDAGAR Reloj de Cuarzo de Lujo Elegante Minimalista para Mujer, Calendario Casual Compacto de Negocios en tono rosa." },
+            { id: 16, name: "Poedagar 785 (Marrón)", originalPrice: 35, price: 33.25, category: "clasico", image: "poedagar785_marron.jpg", desc: "POEDAGAR Reloj de Cuarzo de Lujo Elegante Minimalista para Mujer, Calendario Casual Compacto de Negocios con dial marrón." },
+            { id: 17, name: "Rinnady 10474-1", originalPrice: 30, price: 28.5, category: "clasico", image: "rinnady10474.jpg", desc: "Reloj de Mujer Easy Fashion - Esfera Redonda, Correa de Silicona, Movimiento de Cuarzo, Diseño Lujoso y Moderno." }
         ];
 
         let cart = [];
