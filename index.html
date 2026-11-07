@@ -376,15 +376,29 @@
                 </form>
             </div>
 
-            <!-- Panel de Opiniones Anónimas -->
+            <!-- Panel de Opiniones Globales con Acceso Admin Secreto -->
             <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-gold-500/30 space-y-6">
                 <div class="flex flex-col sm:flex-row items-center justify-between pb-4 border-b border-gold-500/20 gap-4">
                     <h3 class="font-serif text-xl font-bold text-white flex items-center gap-2">
-                        📋 Panel de Opiniones Anónimas
+                        📋 Panel de Opiniones Globales
                     </h3>
-                    <button onclick="clearAllReviews()" class="px-4 py-2 bg-dark-800 hover:bg-red-950/40 border border-red-500/30 text-red-400 hover:text-red-300 text-xs font-semibold rounded-lg transition-all inline-flex items-center gap-2">
-                        🗑️ Borrar Todas
+                    <!-- Botón secreto para activar modo admin -->
+                    <button onclick="unlockAdmin()" class="text-xs text-gray-500 hover:text-gold-400 transition-colors">
+                        🔐 Admin
                     </button>
+                </div>
+
+                <!-- Controles de Administrador (Ocultos hasta que pongas tu clave) -->
+                <div id="admin-controls" class="hidden p-4 rounded-xl bg-dark-950 border border-gold-500/40 space-y-3">
+                    <p class="text-xs text-gold-400 font-bold">🛡️ Modo Administrador Activado</p>
+                    <div class="flex gap-2">
+                        <button onclick="clearAllReviews()" class="px-4 py-2 bg-red-950/60 hover:bg-red-900 border border-red-500/40 text-red-300 text-xs font-semibold rounded-lg transition-all">
+                            🗑️ Borrar Todas las Opiniones
+                        </button>
+                        <button onclick="lockAdmin()" class="px-4 py-2 bg-dark-800 hover:bg-dark-700 text-gray-300 text-xs font-semibold rounded-lg transition-all">
+                            🔒 Cerrar Sesión Admin
+                        </button>
+                    </div>
                 </div>
 
                 <div id="reviews-list" class="space-y-4">
@@ -724,7 +738,6 @@
             const isApartado = document.getElementById('layaway-toggle').checked;
             const layawayDetails = document.getElementById('layaway-details');
             
-            // Calculamos el total usando el precio normal (originalPrice)
             const totalNormal = cart.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
 
             if (isApartado && cart.length > 0) {
@@ -755,7 +768,6 @@
             if (cartCount) cartCount.innerText = totalItems;
             if (cartTotal) cartTotal.innerText = `$${totalPrice} USD`;
 
-            // Actualizar montos del apartado si está activo
             actualizarModoApartado();
 
             if (whatsappBtn) {
@@ -848,15 +860,14 @@
             }
         }
 
-        // 5. RESEÑAS / OPINIONES CON FILTRO DE GROSERÍAS Y LOCALSTORAGE
-        const badWords = [
-            "coño", "mamaguevo", "mamar", "puta", "puto", "mierda", "marico", "marica",
-            "puro", "maldito", "maldita", "verga", "pene", "vagina", "pinga", "maldicion",
-            "guevon", "ladron", "estafador", "zorra", "estafadores", "pendejo", "pendeja"
-        ];
+        // 5. RESEÑAS / OPINIONES CON JSONBIN.IO + ACCESO ADMIN SEGURO
+        const BIN_ID = "6aef6198ac6210605a75ca77"; 
+        const API_KEY = "$2a$10$fhn84mHd3NZ8XDszuFggC.YqHQ1HG200lpeumegvD.qHSey.cByhq"; 
+        const ADMIN_PIN = "2026"; // <--- CAMBIA ESTE NÚMERO POR TU CLAVE SECRETA
 
-        let reviews = JSON.parse(localStorage.getItem('lecheria_reviews')) || [];
+        let reviews = [];
         let selectedRating = 5;
+        let isAdmin = localStorage.getItem('lecheria_admin') === 'true';
 
         function setRating(rating) {
             selectedRating = rating;
@@ -872,56 +883,49 @@
             });
         }
 
-        function containsBadWords(text) {
-            const cleanText = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            return badWords.some(word => {
-                const regex = new RegExp(`\\b${word}\\b`, 'i');
-                return regex.test(cleanText);
-            });
-        }
-
-        function submitReview(event) {
-            event.preventDefault();
-            const commentInput = document.getElementById('review-comment');
-            const errorMsg = document.getElementById('review-error');
-
-            const comment = commentInput.value.trim();
-
-            if (comment !== "" && containsBadWords(comment)) {
-                errorMsg.innerText = "⚠️ Por favor, mantén un lenguaje respetuoso. No se permiten comentarios desobligantes.";
-                errorMsg.classList.remove('hidden');
+        function unlockAdmin() {
+            if (isAdmin) {
+                document.getElementById('admin-controls').classList.remove('hidden');
                 return;
             }
-
-            errorMsg.classList.add('hidden');
-
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const todayStr = new Date().toLocaleDateString('es-ES', options);
-
-            reviews.unshift({
-                rating: selectedRating,
-                comment: comment,
-                date: todayStr
-            });
-
-            localStorage.setItem('lecheria_reviews', JSON.stringify(reviews));
-
-            commentInput.value = '';
-            setRating(5);
-            renderReviews();
-        }
-
-        function clearAllReviews() {
-            if (confirm("¿Estás seguro de borrar todas las calificaciones y opiniones?")) {
-                reviews = [];
-                localStorage.removeItem('lecheria_reviews');
+            const pin = prompt("Introduce tu clave de administrador:");
+            if (pin === ADMIN_PIN) {
+                isAdmin = true;
+                localStorage.setItem('lecheria_admin', 'true');
+                document.getElementById('admin-controls').classList.remove('hidden');
                 renderReviews();
+                alert("¡Modo Administrador activado!");
+            } else if (pin !== null) {
+                alert("Clave incorrecta.");
             }
         }
 
-        function renderReviews() {
+        function lockAdmin() {
+            isAdmin = false;
+            localStorage.removeItem('lecheria_admin');
+            document.getElementById('admin-controls').classList.add('hidden');
+            renderReviews();
+            alert("Sesión de administrador cerrada.");
+        }
+
+        async function renderReviews() {
             const list = document.getElementById('reviews-list');
             if (!list) return;
+
+            if (isAdmin) {
+                document.getElementById('admin-controls').classList.remove('hidden');
+            }
+
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                const data = await response.json();
+                reviews = data.record && data.record.reviews ? data.record.reviews : [];
+            } catch (error) {
+                console.error("Error al cargar opiniones:", error);
+                reviews = [];
+            }
 
             if (reviews.length === 0) {
                 const todayStr = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -929,7 +933,7 @@
                     <div class="p-4 rounded-xl border border-gold-500/30 bg-dark-950 text-gold-400 text-sm mb-4">
                         📊 <strong>Hoy (${todayStr}):</strong> Sin calificaciones registradas aún.
                     </div>
-                    <p class="text-gray-400 text-center py-6 text-sm italic">Aún no hay calificaciones anónimas registradas.</p>
+                    <p class="text-gray-400 text-center py-6 text-sm italic">Aún no hay calificaciones registradas.</p>
                 `;
                 return;
             }
@@ -941,14 +945,18 @@
                     starsHtml += `<span class="${i <= r.rating ? 'text-gold-500' : 'text-gray-600'}">★</span>`;
                 }
 
+                const deleteBtnHtml = isAdmin 
+                    ? `<button onclick="deleteSingleReview(${idx})" class="absolute top-3 right-3 px-2.5 py-1 bg-red-950/60 hover:bg-red-900 text-red-300 rounded text-xs font-semibold">🗑️ Eliminar</button>` 
+                    : '';
+
                 htmlContent += `
                     <div class="p-4 rounded-xl border border-gold-500/20 bg-dark-800 space-y-2 relative">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between pr-16">
                             <div class="flex gap-1 text-base">${starsHtml}</div>
                             <span class="text-xs text-gray-500">${r.date}</span>
                         </div>
                         ${r.comment ? `<p class="text-gray-200 text-sm font-light leading-relaxed">${r.comment}</p>` : `<p class="text-gray-500 text-xs italic">Calificación sin comentario escrito.</p>`}
-                        <button onclick="deleteSingleReview(${idx})" class="absolute top-3 right-3 text-red-400 hover:text-red-300 text-xs">🗑️</button>
+                        ${deleteBtnHtml}
                     </div>
                 `;
             });
@@ -956,10 +964,81 @@
             list.innerHTML = htmlContent;
         }
 
-        function deleteSingleReview(index) {
-            reviews.splice(index, 1);
-            localStorage.setItem('lecheria_reviews', JSON.stringify(reviews));
+        async function submitReview(event) {
+            event.preventDefault();
+            const commentInput = document.getElementById('review-comment');
+            const errorMsg = document.getElementById('review-error');
+
+            const comment = commentInput.value.trim();
+            if (errorMsg) errorMsg.classList.add('hidden');
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const todayStr = new Date().toLocaleDateString('es-ES', options);
+
+            const nuevaReseña = {
+                rating: selectedRating,
+                comment: comment,
+                date: todayStr
+            };
+
+            reviews.unshift(nuevaReseña);
+
+            try {
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify({ reviews: reviews })
+                });
+            } catch (error) {
+                console.error("Error al guardar la opinión:", error);
+            }
+
+            commentInput.value = '';
+            setRating(5);
             renderReviews();
+        }
+
+        async function clearAllReviews() {
+            if (!isAdmin) return;
+            if (confirm("¿Estás seguro de borrar TODAS las opiniones de la nube?")) {
+                reviews = [];
+                try {
+                    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': API_KEY
+                        },
+                        body: JSON.stringify({ reviews: [] })
+                    });
+                } catch (error) {
+                    console.error("Error al borrar:", error);
+                }
+                renderReviews();
+            }
+        }
+
+        async function deleteSingleReview(index) {
+            if (!isAdmin) return;
+            if (confirm("¿Eliminar esta opinión?")) {
+                reviews.splice(index, 1);
+                try {
+                    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': API_KEY
+                        },
+                        body: JSON.stringify({ reviews: reviews })
+                    });
+                } catch (error) {
+                    console.error("Error al eliminar:", error);
+                }
+                renderReviews();
+            }
         }
 
         // 6. MENÚ MÓVIL Y ACORDEÓN FAQ
@@ -972,7 +1051,7 @@
             const content = document.getElementById(id);
             const icon = document.getElementById(`${id}-icon`);
             if (content) content.classList.toggle('hidden');
-            if (icon) icon.classList.toggle('rotate-180');
+            if(icon) icon.classList.toggle('rotate-180');
         }
 
         // INICIALIZACIÓN
