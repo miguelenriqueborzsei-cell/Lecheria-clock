@@ -860,10 +860,16 @@
             }
         }
 
-        // 5. RESEÑAS / OPINIONES CON JSONBIN.IO + ACCESO ADMIN SEGURO
+        // 5. RESEÑAS / OPINIONES CON FILTRO DE GROSERÍAS, JSONBIN Y ACCESO ADMIN
         const BIN_ID = "6aef6198ac6210605a75ca77"; 
         const API_KEY = "$2a$10$fhn84mHd3NZ8XDszuFggC.YqHQ1HG200lpeumegvD.qHSey.cByhq"; 
-        const ADMIN_PIN = "2026"; // <--- CAMBIA ESTE NÚMERO POR TU CLAVE SECRETA
+        const ADMIN_PIN = "1704"; // Clave de Administrador
+
+        const badWords = [
+            "malandros", "malandro", "becerro", "coño", "mamaguevo", "mamar", "puta", "puto", "mierda", "marico", "chupalo", "chupalo","marica",
+            "chupamela", "chupamelo", "drogado", "mariquito", "maldito", "maldita", "verga", "pene", "vagina", "pinga", "maldicion",
+            "guevon", "ladron", "estafador", "zorra", "estafadores", "pendejo", "pendeja"
+        ];
 
         let reviews = [];
         let selectedRating = 5;
@@ -880,6 +886,14 @@
                     star.classList.remove('text-gold-500');
                     star.classList.add('text-gray-600');
                 }
+            });
+        }
+
+        function containsBadWords(text) {
+            const cleanText = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            return badWords.some(word => {
+                const regex = new RegExp(`\\b${word}\\b`, 'i');
+                return regex.test(cleanText);
             });
         }
 
@@ -970,6 +984,13 @@
             const errorMsg = document.getElementById('review-error');
 
             const comment = commentInput.value.trim();
+
+            if (comment !== "" && containsBadWords(comment)) {
+                errorMsg.innerText = "⚠️ Por favor, mantén un lenguaje respetuoso. No se permiten comentarios desobligantes.";
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
             if (errorMsg) errorMsg.classList.add('hidden');
 
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -1051,7 +1072,7 @@
             const content = document.getElementById(id);
             const icon = document.getElementById(`${id}-icon`);
             if (content) content.classList.toggle('hidden');
-            if(icon) icon.classList.toggle('rotate-180');
+            if (icon) icon.classList.toggle('rotate-180');
         }
 
         // INICIALIZACIÓN
