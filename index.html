@@ -707,7 +707,12 @@
         // 3. CARRITO DE COMPRAS Y ACTUALIZACIÓN DINÁMICA DEL ENLACE DE WHATSAPP + SISTEMA DE APARTADO
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
-            if (drawer) drawer.classList.toggle('hidden');
+            if (drawer) {
+                drawer.classList.toggle('hidden');
+                if (!drawer.classList.contains('hidden')) {
+                    updateCartUI();
+                }
+            }
         }
 
         function addToCart(productId) {
@@ -753,6 +758,8 @@
             } else {
                 layawayDetails.classList.add('hidden');
             }
+
+            updateCartUI();
         }
 
         function updateCartUI() {
@@ -760,39 +767,46 @@
             const cartItemsContainer = document.getElementById('cart-items');
             const cartTotal = document.getElementById('cart-total');
             const whatsappBtn = document.getElementById('whatsapp-checkout-btn');
+            const checkboxApartado = document.getElementById('layaway-toggle');
 
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const totalNormal = cart.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
 
             if (cartCount) cartCount.innerText = totalItems;
-            if (cartTotal) cartTotal.innerText = `$${totalPrice} USD`;
 
-            actualizarModoApartado();
+            const isApartado = checkboxApartado ? checkboxApartado.checked : false;
+
+            if (cartTotal) {
+                cartTotal.innerText = isApartado ? `$${totalNormal.toFixed(2)} USD` : `$${totalPrice} USD`;
+            }
 
             if (whatsappBtn) {
-                const isApartado = document.getElementById('layaway-toggle').checked;
                 let message = "¡Hola Lecheria Clock! 🕒 Quisiera realizar el siguiente pedido:\n\n";
                 
-                cart.forEach(item => {
-                    const subtotal = item.price * item.quantity;
-                    message += `• *${item.name}* (x${item.quantity}) - $${subtotal} USD\n`;
-                });
-                
-                message += `\n*Total a pagar:* $${totalPrice} USD\n`;
-
                 if (isApartado) {
+                    cart.forEach(item => {
+                        const subtotalNormal = item.originalPrice * item.quantity;
+                        message += `• *${item.name}* (x${item.quantity}) - $${subtotalNormal} USD (Precio Normal)\n`;
+                    });
+
                     const c1 = (totalNormal * 0.50).toFixed(2);
                     const c2 = (totalNormal * 0.25).toFixed(2);
                     const c3 = (totalNormal * 0.25).toFixed(2);
                     
                     message += `\n📌 *MODALIDAD: PLAN DE APARTADO (3 Cuotas)*\n`;
-                    message += `- *Base cálculo (Precio Normal):* $${totalNormal.toFixed(2)} USD\n`;
+                    message += `- *Total (Precio Normal):* $${totalNormal.toFixed(2)} USD\n`;
                     message += `- *Pago 1 (Hoy - 50%):* $${c1} USD\n`;
                     message += `- *Pago 2 (25%):* $${c2} USD\n`;
                     message += `- *Pago 3 (Final 25%):* $${c3} USD\n`;
                     message += `\nQuedo a la espera de los datos para abonar la 1ª cuota y reservar mi pedido.`;
                 } else {
+                    cart.forEach(item => {
+                        const subtotal = item.price * item.quantity;
+                        message += `• *${item.name}* (x${item.quantity}) - $${subtotal} USD\n`;
+                    });
+                    
+                    message += `\n*Total a pagar:* $${totalPrice} USD\n`;
                     message += `\nQuedo a la espera para coordinar el método de pago y la entrega/envío.`;
                 }
 
